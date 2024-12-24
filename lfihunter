@@ -24,7 +24,7 @@ wordlist="lfi.txt"  # Default wordlist
 # Display banners
 figlet -f standard -c "00xCanelo" | lolcat 
 echo " "
-figlet -f slant -c "LFI Hunter Tool"
+figlet -f slant -c "LFI Hunter"
 
 # Parse command-line arguments
 while getopts "u:t:w:" opt; do  # Note the colon after "w"
