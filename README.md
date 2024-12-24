@@ -19,7 +19,7 @@ This tool is designed for fuzzing and detecting **Local File Inclusion (LFI)** v
 To get started, clone this repository on your Linux machine:
 
 ```bash
-git clone https://github.com/yourusername/LFIHunter.git
+git clone https://github.com/00xCanelo/LfiHunter.git
 cd LfiHunter
 chmod +x lfihunter
 ./lfihunter
