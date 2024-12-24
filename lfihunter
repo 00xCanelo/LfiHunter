@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Check if required tools are installed
+if ! command -v figlet &> /dev/null; then 
+    echo "Error: figlet is not installed. Please install it using 'sudo apt install figlet' or your package manager."
+    exit 1
+fi
+
+if ! command -v lolcat &> /dev/null; then 
+    echo "Error: lolcat is not installed. Please install it using 'sudo apt install lolcat' or your package manager."
+    exit 1
+fi
+
+if ! command -v ffuf &> /dev/null; then
+    echo "Error: ffuf is not installed. Please install it using 'sudo apt install ffuf' or your package manager."
+    exit 1
+fi
+
+# Default values
+url=""
+threading=50
+wordlist="lfi.txt"  # Default wordlist
+
+# Display banners
+figlet -f standard -c "00xCanelo" | lolcat 
+
+# Parse command-line arguments
+while getopts "u:t:w:" opt; do  # Note the colon after "w"
+    case $opt in 
+        u) url=$OPTARG ;;
+        t) threading=$OPTARG ;;
+        w) wordlist=$OPTARG ;;
+        *) 
+            echo "Usage: $0 -u <url> -w <wordlist> -t <threading>"
+            echo "Defaults: -w lfi.txt, -t 50"
+            exit 1 
+            ;;
+    esac
+done
+
+# Validate URL
+if [ -z "$url" ]; then
+    echo "Error: URL is required (-u http://example.com?page=FUZZ)"
+    exit 1
+fi
+
+# Validate Wordlist
+if [ ! -f "$wordlist" ]; then
+    echo "Error: Wordlist file '$wordlist' not found."
+    exit 1
+fi
+
+
+ffuf -u "$url" -w "$wordlist" -t "$threading" -fc 404
