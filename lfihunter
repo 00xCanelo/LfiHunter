@@ -22,7 +22,7 @@ threading=50
 wordlist="lfi.txt"  # Default wordlist
 
 # Display banners
-figlet -f standard -c "00xCanelo" | lolcat  
+figlet -f standard -c "00xCanelo" | lolcat 
 echo " "
 figlet -f slant -c "LFI Hunter Tool"
 
@@ -46,6 +46,12 @@ if [ -z "$url" ]; then
     exit 1
 fi
 
+if [[ ! "$url" == *"FUZZ"* ]]; then
+    echo "Error: URL must contain 'FUZZ' at the end (e.g., http://example.com?page=FUZZ)"
+    echo "Correction: ${url}FUZZ "
+    exit 1
+fi
+
 # Validate Wordlist
 if [ ! -f "$wordlist" ]; then
     echo "Error: Wordlist file '$wordlist' not found."
@@ -53,7 +59,6 @@ if [ ! -f "$wordlist" ]; then
     echo "install using 'wget https://raw.githubusercontent.com/00xCanelo/LfiHunter/refs/heads/main/lfi.txt'"
     exit 1
 fi
-
 
 
 ffuf -u "$url" -w "$wordlist" -t "$threading" -fc 404
