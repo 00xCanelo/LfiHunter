@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Check if required tools are installed
 if ! command -v figlet &> /dev/null; then 
     echo "Error: figlet is not installed. Please install it using 'sudo apt install figlet' or your package manager."
     exit 1
@@ -15,15 +16,18 @@ if ! command -v ffuf &> /dev/null; then
     exit 1
 fi
 
+# Default values
 url=""
 threading=50
-wordlist="lfi.txt"
+wordlist="lfi.txt"  # Default wordlist
 
+# Display banners
 figlet -f standard -c "00xCanelo" | lolcat 
 echo " "
 figlet -f slant -c "LFI Hunter Tool"
 
-while getopts "u:t:w:" opt; do
+# Parse command-line arguments
+while getopts "u:t:w:" opt; do  # Note the colon after "w"
     case $opt in 
         u) url=$OPTARG ;;
         t) threading=$OPTARG ;;
@@ -31,19 +35,24 @@ while getopts "u:t:w:" opt; do
         *) 
             echo "Usage: $0 -u <url> -w <wordlist> -t <threading>"
             echo "Defaults: -w lfi.txt, -t 50"
-            exit 1
+            exit 1 
             ;;
     esac
 done
 
+# Validate URL
 if [ -z "$url" ]; then
     echo "Error: URL is required (-u http://example.com?page=FUZZ)"
     exit 1
 fi
 
+# Validate Wordlist
 if [ ! -f "$wordlist" ]; then
     echo "Error: Wordlist file '$wordlist' not found."
+    echo "You can download the default lfi.txt wordlist"
+    echo "install using 'wget https://raw.githubusercontent.com/00xCanelo/LfiHunter/refs/heads/main/lfi.txt'"
     exit 1
 fi
+
 
 ffuf -u "$url" -w "$wordlist" -t "$threading" -fc 404
