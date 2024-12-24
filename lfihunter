@@ -22,7 +22,7 @@ threading=50
 wordlist="lfi.txt"  # Default wordlist
 
 # Display banners
-figlet -f standard -c "00xCanelo" | lolcat 
+figlet -f standard -c "00xCanelo" | lolcat  
 echo " "
 figlet -f slant -c "LFI Hunter Tool"
 
@@ -55,4 +55,7 @@ if [ ! -f "$wordlist" ]; then
 fi
 
 
+
 ffuf -u "$url" -w "$wordlist" -t "$threading" -fc 404
+
+#made by 00xCanelo
